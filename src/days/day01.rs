@@ -1,15 +1,69 @@
+use std::collections::hash_map;
+
 pub fn parse_input(input: &str) -> &str {
     input
 }
 
 #[allow(unused_variables)]
 pub fn part1(input: &str) -> Option<u32> {
-    None
+    let mut sum = 0;
+    for l in input.lines() {
+        let mut found_first = false;
+        let mut first = 0;
+        let mut last = 0;
+        for c in l.chars() {
+            match c {
+                '0'..='9' => {
+                    if !found_first {
+                        first = c as u32 - '0' as u32;
+                        found_first = true;
+                    }
+                    last = c as u32 - '0' as u32;
+                }
+                _ => continue,
+            }
+        }
+        sum += first * 10 + last;
+    }
+
+    Some(sum)
 }
 
 #[allow(unused_variables)]
 pub fn part2(input: &str) -> Option<u32> {
-    None
+    let number_strs = [
+        "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+    ];
+    let mut sum = 0;
+    for l in input.lines() {
+        let length = l.len();
+        let mut first = None;
+        let mut last = None;
+        for (i, c) in l.chars().enumerate() {
+            if c.is_ascii_digit() {
+                if first.is_none() {
+                    first = Some(c as u32 - '0' as u32);
+                }
+                last = Some(c as u32 - '0' as u32);
+                continue;
+            };
+            for (j, &number) in number_strs.iter().enumerate() {
+                if number.len() > length - i {
+                    continue;
+                }
+                if &l[i..i + number.len()] == number {
+                    if first.is_none() {
+                        first = Some(j as u32);
+                    }
+                    last = Some(j as u32);
+                    break;
+                }
+            }
+        }
+        sum += first.unwrap() * 10 + last.unwrap();
+    }
+
+    Some(sum)
 }
 
 #[cfg(test)]

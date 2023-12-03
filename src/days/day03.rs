@@ -2,40 +2,11 @@ use std::collections::HashMap;
 
 type Point = (i32, i32);
 
-const DIRECTIONS: [Point; 8] = [
-    (-1, -1),
-    (-1, 0),
-    (-1, 1),
-    (0, 1),
-    (0, -1),
-    (1, -1),
-    (1, 0),
-    (1, 1),
-];
-
 #[derive(Debug)]
 pub enum Item {
     Number { value: u32, length: usize },
     Symbol(char),
 }
-
-// pub fn read_adjacent_numbers(
-//     input: &[&[char]],
-//     width: i32,
-//     height: i32,
-//     x: i32,
-//     y: i32,
-// ) -> Vec<(Point, u32)> {
-//     let points = DIRECTIONS
-//         .iter()
-//         .map(|(i, j)| (j + x, y + i))
-//         .filter(|&(i, j)| 0 <= i && i < height && 0 <= j && j < width)
-//         .filter(|&(i, j)| input[i as usize][j as usize].is_ascii_digit());
-//
-//     for (i, j) in points {}
-//
-//     return vec![];
-// }
 
 pub fn parse_input(input: &str) -> HashMap<Point, Item> {
     let mut map: HashMap<Point, Item> = HashMap::new();

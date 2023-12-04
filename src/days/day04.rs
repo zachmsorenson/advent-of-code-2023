@@ -1,36 +1,21 @@
 use std::collections::{HashMap, HashSet};
 
-pub fn parse_input(input: &str) -> &str {
-    input
+pub struct Card {
+    winners: HashSet<u32>,
+    numbers: Vec<u32>,
+    count: u32,
 }
 
-#[allow(unused_variables)]
-pub fn part1(input: &str) -> Option<u32> {
-    let mut sum = 0;
+pub fn parse_input(input: &str) -> Vec<Card> {
+    let mut output = Vec::new();
     for line in input.lines() {
         let it = line.chars();
         let skip = line.find(": ").unwrap();
         let mut it = it.skip(skip + 1);
 
-        let mut hashset: HashSet<u32> = HashSet::new();
-        while let Some(mut c) = it.next() {
-            match c {
-                '0'..='9' => {
-                    let mut v = c as u32 - '0' as u32;
-                    while let Some(c) = it.next() {
-                        if c.is_ascii_digit() {
-                            v = v * 10 + c as u32 - '0' as u32;
-                        } else {
-                            break;
-                        }
-                    }
-                    hashset.insert(v);
-                }
-                '|' => break,
-                _ => continue,
-            }
-        }
-
+        let mut flag = true;
+        let mut winners: HashSet<u32> = HashSet::new();
+        let mut numbers: Vec<u32> = Vec::new();
         let mut count = 0;
         while let Some(c) = it.next() {
             match c {
@@ -43,73 +28,49 @@ pub fn part1(input: &str) -> Option<u32> {
                             break;
                         }
                     }
-                    if hashset.contains(&v) {
-                        count += 1;
+
+                    if flag {
+                        winners.insert(v);
+                    } else {
+                        numbers.push(v);
+                        if winners.contains(&v) {
+                            count += 1;
+                        }
                     }
                 }
-                '\n' => break,
+                '|' => flag = false,
                 _ => continue,
             }
         }
 
-        if count > 0 {
-            sum += 1 << (count - 1);
-        }
+        output.push(Card {
+            winners,
+            numbers,
+            count,
+        });
     }
 
+    output
+}
+
+#[allow(unused_variables)]
+pub fn part1(input: &[Card]) -> Option<u32> {
+    let sum = input
+        .iter()
+        .map(|c| c.count)
+        .filter(|&c| c > 0)
+        .map(|c| 1 << (c - 1))
+        .sum();
     Some(sum)
 }
 
 #[allow(unused_variables)]
-pub fn part2(input: &str) -> Option<u32> {
+pub fn part2(input: &[Card]) -> Option<u32> {
     let mut counts_map = HashMap::new();
-    for (i, line) in input.lines().enumerate() {
-        let it = line.chars();
-        let skip = line.find(": ").unwrap();
-        let mut it = it.skip(skip + 1);
-
-        let mut hashset: HashSet<u32> = HashSet::new();
-        while let Some(mut c) = it.next() {
-            match c {
-                '0'..='9' => {
-                    let mut v = c as u32 - '0' as u32;
-                    while let Some(c) = it.next() {
-                        if c.is_ascii_digit() {
-                            v = v * 10 + c as u32 - '0' as u32;
-                        } else {
-                            break;
-                        }
-                    }
-                    hashset.insert(v);
-                }
-                '|' => break,
-                _ => continue,
-            }
-        }
-
-        let mut count = 0;
-        while let Some(c) = it.next() {
-            match c {
-                '0'..='9' => {
-                    let mut v = c as u32 - '0' as u32;
-                    while let Some(c) = it.next() {
-                        if c.is_ascii_digit() {
-                            v = v * 10 + c as u32 - '0' as u32;
-                        } else {
-                            break;
-                        }
-                    }
-                    if hashset.contains(&v) {
-                        count += 1;
-                    }
-                }
-                '\n' => break,
-                _ => continue,
-            }
-        }
+    for (i, card) in input.iter().enumerate() {
         let self_instances = *counts_map.get(&i).unwrap_or(&1);
         counts_map.insert(i, self_instances);
-        for j in (i + 1)..=(i + count) {
+        for j in (i + 1)..=(i + card.count as usize) {
             let curr_count: u32 = *counts_map.get(&j).unwrap_or(&1);
             counts_map.insert(j, curr_count + self_instances);
         }
@@ -127,7 +88,7 @@ pub mod tests {
     fn test_day4_part1() {
         let input = parse_input(TEST_INPUT);
 
-        let resp = part1(input);
+        let resp = part1(&input);
 
         assert_eq!(resp, Some(13));
     }
@@ -136,7 +97,7 @@ pub mod tests {
     fn test_day4_part2() {
         let input = parse_input(TEST_INPUT);
 
-        let resp = part2(input);
+        let resp = part2(&input);
 
         assert_eq!(resp, Some(30));
     }

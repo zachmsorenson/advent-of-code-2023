@@ -1,12 +1,6 @@
 use std::collections::{HashMap, HashSet};
 
-pub struct Card {
-    winners: HashSet<u32>,
-    numbers: Vec<u32>,
-    count: u32,
-}
-
-pub fn parse_input(input: &str) -> Vec<Card> {
+pub fn parse_input(input: &str) -> Vec<i32> {
     let mut output = Vec::new();
     for line in input.lines() {
         let it = line.chars();
@@ -15,13 +9,12 @@ pub fn parse_input(input: &str) -> Vec<Card> {
 
         let mut flag = true;
         let mut winners: HashSet<u32> = HashSet::new();
-        let mut numbers: Vec<u32> = Vec::new();
         let mut count = 0;
         while let Some(c) = it.next() {
             match c {
                 '0'..='9' => {
                     let mut v = c as u32 - '0' as u32;
-                    while let Some(c) = it.next() {
+                    for c in it.by_ref() {
                         if c.is_ascii_digit() {
                             v = v * 10 + c as u32 - '0' as u32;
                         } else {
@@ -31,11 +24,8 @@ pub fn parse_input(input: &str) -> Vec<Card> {
 
                     if flag {
                         winners.insert(v);
-                    } else {
-                        numbers.push(v);
-                        if winners.contains(&v) {
-                            count += 1;
-                        }
+                    } else if winners.contains(&v) {
+                        count += 1;
                     }
                 }
                 '|' => flag = false,
@@ -43,34 +33,25 @@ pub fn parse_input(input: &str) -> Vec<Card> {
             }
         }
 
-        output.push(Card {
-            winners,
-            numbers,
-            count,
-        });
+        output.push(count);
     }
 
     output
 }
 
 #[allow(unused_variables)]
-pub fn part1(input: &[Card]) -> Option<u32> {
-    let sum = input
-        .iter()
-        .map(|c| c.count)
-        .filter(|&c| c > 0)
-        .map(|c| 1 << (c - 1))
-        .sum();
+pub fn part1(input: &[i32]) -> Option<u32> {
+    let sum = input.iter().filter(|&&c| c > 0).map(|c| 1 << (c - 1)).sum();
     Some(sum)
 }
 
 #[allow(unused_variables)]
-pub fn part2(input: &[Card]) -> Option<u32> {
+pub fn part2(input: &[i32]) -> Option<u32> {
     let mut counts_map = HashMap::new();
-    for (i, card) in input.iter().enumerate() {
+    for (i, &count) in input.iter().enumerate() {
         let self_instances = *counts_map.get(&i).unwrap_or(&1);
         counts_map.insert(i, self_instances);
-        for j in (i + 1)..=(i + card.count as usize) {
+        for j in (i + 1)..=(i + count as usize) {
             let curr_count: u32 = *counts_map.get(&j).unwrap_or(&1);
             counts_map.insert(j, curr_count + self_instances);
         }

@@ -14,12 +14,12 @@ pub struct Game {
 
 #[derive(Debug)]
 struct CubeSet {
-    red: u32,
-    green: u32,
-    blue: u32,
+    red: u64,
+    green: u64,
+    blue: u64,
 }
 
-fn parse_pair(input: &str) -> IResult<&str, (u32, &str)> {
+fn parse_pair(input: &str) -> IResult<&str, (u64, &str)> {
     let (input, (n, color)) = separated_pair(digit1, tag(" "), alpha1)(input)?;
 
     let n = n.parse().unwrap();
@@ -65,7 +65,7 @@ pub fn parse_input(input: &str) -> Vec<Game> {
     games
 }
 
-pub fn part1(input: &[Game]) -> Option<u32> {
+pub fn part1(input: &[Game]) -> Option<u64> {
     let mut sum = 0;
     for (i, game) in input.iter().enumerate() {
         let mut good = true;
@@ -76,14 +76,14 @@ pub fn part1(input: &[Game]) -> Option<u32> {
             }
         }
         if good {
-            sum += i as u32 + 1;
+            sum += i as u64 + 1;
         }
     }
 
     Some(sum)
 }
 
-pub fn part2(input: &[Game]) -> Option<u32> {
+pub fn part2(input: &[Game]) -> Option<u64> {
     let mut sum = 0;
     for game in input {
         let mut max_set = CubeSet {
@@ -92,9 +92,9 @@ pub fn part2(input: &[Game]) -> Option<u32> {
             green: 0,
         };
         for set in &game.cubes {
-            max_set.red = u32::max(max_set.red, set.red);
-            max_set.green = u32::max(max_set.green, set.green);
-            max_set.blue = u32::max(max_set.blue, set.blue);
+            max_set.red = u64::max(max_set.red, set.red);
+            max_set.green = u64::max(max_set.green, set.green);
+            max_set.blue = u64::max(max_set.blue, set.blue);
         }
 
         sum += max_set.red * max_set.green * max_set.blue;

@@ -4,7 +4,7 @@ type Point = (i32, i32);
 
 #[derive(Debug)]
 pub enum Item {
-    Number { value: u32, length: usize },
+    Number { value: u64, length: usize },
     Symbol(char),
 }
 
@@ -22,7 +22,7 @@ pub fn parse_input(input: &str) -> HashMap<Point, Item> {
                     let mut num = 0;
                     let mut count = 0;
                     while c.is_ascii_digit() {
-                        num = num * 10 + c as u32 - '0' as u32;
+                        num = num * 10 + c as u64 - '0' as u64;
                         count += 1;
                         j += 1;
                         if j >= width {
@@ -53,7 +53,7 @@ pub fn parse_input(input: &str) -> HashMap<Point, Item> {
 }
 
 #[allow(unused_variables)]
-pub fn part1(input: &HashMap<Point, Item>) -> Option<u32> {
+pub fn part1(input: &HashMap<Point, Item>) -> Option<u64> {
     let mut sum = 0;
     for (&(i, j), symbol) in input {
         if let Item::Number { value, length } = &symbol {
@@ -79,8 +79,8 @@ pub fn part1(input: &HashMap<Point, Item>) -> Option<u32> {
 }
 
 #[allow(unused_variables)]
-pub fn part2(input: &HashMap<Point, Item>) -> Option<u32> {
-    let mut map: HashMap<(i32, i32), (u32, u32, u32)> = HashMap::new();
+pub fn part2(input: &HashMap<Point, Item>) -> Option<u64> {
+    let mut map: HashMap<(i32, i32), (u64, u64, u64)> = HashMap::new();
     for (&(i, j), symbol) in input {
         if let Item::Number { value, length } = &symbol {
             let mut points = vec![(i, j - 1), (i, j + *length as i32)];

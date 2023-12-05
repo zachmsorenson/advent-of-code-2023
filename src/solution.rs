@@ -4,8 +4,8 @@ use std::time::{Duration, Instant};
 
 pub struct Results {
     pub day: &'static str,
-    pub part1_output: Option<u32>,
-    pub part2_output: Option<u32>,
+    pub part1_output: Option<u64>,
+    pub part2_output: Option<u64>,
     pub parse_time: Duration,
     pub part1_time: Duration,
     pub part2_time: Duration,
@@ -87,7 +87,7 @@ pub fn all_solutions() -> Vec<Solution> {
         solution!(day02),
         solution!(day03),
         solution!(day04),
-        // solution!(day05),
+        solution!(day05),
         // solution!(day06),
         // solution!(day07),
         // solution!(day08),

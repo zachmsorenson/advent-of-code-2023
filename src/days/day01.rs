@@ -5,7 +5,7 @@ pub fn parse_input(input: &str) -> &str {
 }
 
 #[allow(unused_variables)]
-pub fn part1(input: &str) -> Option<u32> {
+pub fn part1(input: &str) -> Option<u64> {
     let mut sum = 0;
     for l in input.lines() {
         let mut found_first = false;
@@ -15,10 +15,10 @@ pub fn part1(input: &str) -> Option<u32> {
             match c {
                 '0'..='9' => {
                     if !found_first {
-                        first = c as u32 - '0' as u32;
+                        first = c as u64 - '0' as u64;
                         found_first = true;
                     }
-                    last = c as u32 - '0' as u32;
+                    last = c as u64 - '0' as u64;
                 }
                 _ => continue,
             }
@@ -30,7 +30,7 @@ pub fn part1(input: &str) -> Option<u32> {
 }
 
 #[allow(unused_variables)]
-pub fn part2(input: &str) -> Option<u32> {
+pub fn part2(input: &str) -> Option<u64> {
     let number_strs = [
         "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
     ];
@@ -42,9 +42,9 @@ pub fn part2(input: &str) -> Option<u32> {
         for (i, c) in l.chars().enumerate() {
             if c.is_ascii_digit() {
                 if first.is_none() {
-                    first = Some(c as u32 - '0' as u32);
+                    first = Some(c as u64 - '0' as u64);
                 }
-                last = Some(c as u32 - '0' as u32);
+                last = Some(c as u64 - '0' as u64);
                 continue;
             };
             for (j, &number) in number_strs.iter().enumerate() {
@@ -53,9 +53,9 @@ pub fn part2(input: &str) -> Option<u32> {
                 }
                 if &l[i..i + number.len()] == number {
                     if first.is_none() {
-                        first = Some(j as u32);
+                        first = Some(j as u64);
                     }
-                    last = Some(j as u32);
+                    last = Some(j as u64);
                     break;
                 }
             }

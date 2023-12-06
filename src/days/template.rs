@@ -24,4 +24,13 @@ pub mod tests {
 
         assert_eq!(resp, None);
     }
+
+    #[test]
+    fn test_day0_part2() {
+        let input = parse_input(TEST_INPUT);
+
+        let resp = part2(&input);
+
+        assert_eq!(resp, None);
+    }
 }

@@ -73,7 +73,8 @@ pub fn part1(input: &str) -> Option<u64> {
 
 #[allow(unused_variables)]
 pub fn part2(input: &str) -> Option<u64> {
-    let mut nums = Vec::new();
+    let mut nums = [0; 2];
+    let mut i = 0;
     for line in input.lines() {
         let mut chars = line.chars();
         while let Some(c) = chars.next() {
@@ -87,23 +88,21 @@ pub fn part2(input: &str) -> Option<u64> {
                             continue;
                         }
                     }
-                    nums.push(v);
+                    nums[i] = v;
+                    i += 1;
                 }
                 _ => continue,
             }
         }
     }
-
     let time = nums[0];
     let dist = nums[1];
-    let mut prod = 1;
-    let possible = (0..time)
-        .map(|i| (time - i) * i)
-        .filter(|&d| d > dist)
-        .count();
-    prod *= possible as u64;
 
-    Some(prod)
+    // Use quadratic formula and find roots of formula x * (time - x) = dist
+    let first_root = (time as f64 - f64::sqrt((time * time - 4 * dist) as f64)) / 2.0;
+    let second_root = time - f64::ceil(first_root) as u64;
+
+    Some(second_root - first_root as u64)
 }
 
 #[cfg(test)]
@@ -125,6 +124,6 @@ pub mod tests {
 
         let resp = part2(input);
 
-        assert_eq!(resp, None);
+        assert_eq!(resp, Some(71503));
     }
 }

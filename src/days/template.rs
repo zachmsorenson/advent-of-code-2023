@@ -3,12 +3,12 @@ pub fn parse_input(input: &str) -> &str {
 }
 
 #[allow(unused_variables)]
-pub fn part1(input: &str) -> Option<u32> {
+pub fn part1(input: &str) -> Option<u64> {
     None
 }
 
 #[allow(unused_variables)]
-pub fn part2(input: &str) -> Option<u32> {
+pub fn part2(input: &str) -> Option<u64> {
     None
 }
 
@@ -17,7 +17,7 @@ pub mod tests {
     use super::*;
     const TEST_INPUT: &str = include_str!("../../input/day00/test.txt");
     #[test]
-    fn test_day0_part1() {
+    fn test_day00_part1() {
         let input = parse_input(TEST_INPUT);
 
         let resp = part1(input);
@@ -26,7 +26,7 @@ pub mod tests {
     }
 
     #[test]
-    fn test_day0_part2() {
+    fn test_day00_part2() {
         let input = parse_input(TEST_INPUT);
 
         let resp = part2(&input);

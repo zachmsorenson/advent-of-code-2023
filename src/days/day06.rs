@@ -1,32 +1,4 @@
 pub fn parse_input(input: &str) -> &str {
-    // let mut nums = Vec::new();
-    // for line in input.lines() {
-    //     let mut chars = line.chars();
-    //     while let Some(c) = chars.next() {
-    //         match c {
-    //             '0'..='9' => {
-    //                 let mut v = c as u64 - '0' as u64;
-    //                 while let Some(c) = chars.next() {
-    //                     if c.is_ascii_digit() {
-    //                         v = v * 10 + c as u64 - '0' as u64;
-    //                     } else {
-    //                         break;
-    //                     }
-    //                 }
-    //                 nums.push(v);
-    //             }
-    //             _ => continue,
-    //         }
-    //     }
-    // }
-    //
-    // let mut vals = Vec::new();
-    // let count = nums.len() >> 1;
-    // for i in 0..count {
-    //     vals.push((nums[i], nums[i + count]));
-    // }
-    //
-    // vals
     input
 }
 

@@ -92,5 +92,6 @@ pub fn all_solutions() -> Vec<Solution> {
         solution!(day07),
         solution!(day08),
         solution!(day09),
+        solution!(day10),
     ]
 }

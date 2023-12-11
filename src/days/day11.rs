@@ -9,8 +9,6 @@ pub struct Input {
     galaxy_coords: Vec<Point>,
     row_costs: Vec<bool>,
     col_costs: Vec<bool>,
-    width: usize,
-    height: usize,
 }
 
 pub fn parse_input(input: &str) -> Input {
@@ -18,7 +16,6 @@ pub fn parse_input(input: &str) -> Input {
     let mut row_costs = Vec::new();
     let mut col_costs = Vec::new();
     let mut width = 0;
-    let mut height = 0;
     let mut occupied_columns = HashSet::new();
     for (y, line) in input.lines().enumerate() {
         let mut empty_row = true;
@@ -42,7 +39,6 @@ pub fn parse_input(input: &str) -> Input {
         } else {
             row_costs.push(false);
         }
-        height = y + 1;
     }
 
     for i in 0..width {
@@ -57,8 +53,6 @@ pub fn parse_input(input: &str) -> Input {
         galaxy_coords: galaxies,
         row_costs,
         col_costs,
-        width,
-        height,
     }
 }
 

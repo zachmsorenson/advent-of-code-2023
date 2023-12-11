@@ -7,14 +7,14 @@ pub struct Point {
 
 pub struct Input {
     galaxy_coords: Vec<Point>,
-    row_costs: Vec<bool>,
-    col_costs: Vec<bool>,
+    empty_rows: Vec<bool>,
+    empty_cols: Vec<bool>,
 }
 
 pub fn parse_input(input: &str) -> Input {
     let mut galaxies = Vec::new();
-    let mut row_costs = Vec::new();
-    let mut col_costs = Vec::new();
+    let mut empty_rows = Vec::new();
+    let mut empty_cols = Vec::new();
     let mut width = 0;
     let mut occupied_columns = HashSet::new();
     for (y, line) in input.lines().enumerate() {
@@ -35,24 +35,24 @@ pub fn parse_input(input: &str) -> Input {
             }
         }
         if empty_row {
-            row_costs.push(true);
+            empty_rows.push(true);
         } else {
-            row_costs.push(false);
+            empty_rows.push(false);
         }
     }
 
     for i in 0..width {
         if occupied_columns.contains(&i) {
-            col_costs.push(false);
+            empty_cols.push(false);
         } else {
-            col_costs.push(true);
+            empty_cols.push(true);
         }
     }
 
     Input {
         galaxy_coords: galaxies,
-        row_costs,
-        col_costs,
+        empty_rows,
+        empty_cols,
     }
 }
 
@@ -60,7 +60,7 @@ pub fn parse_input(input: &str) -> Input {
 pub fn part1(input: &Input) -> Option<u64> {
     let mut sum = 0;
     let row_cost_scan: Vec<u64> = input
-        .row_costs
+        .empty_rows
         .iter()
         .map(|b| match b {
             true => 2,
@@ -72,7 +72,7 @@ pub fn part1(input: &Input) -> Option<u64> {
         })
         .collect();
     let col_cost_scan: Vec<u64> = input
-        .col_costs
+        .empty_cols
         .iter()
         .map(|b| match b {
             true => 2,
@@ -105,7 +105,7 @@ pub fn part1(input: &Input) -> Option<u64> {
 pub fn part2(input: &Input) -> Option<u64> {
     let mut sum = 0;
     let row_cost_scan: Vec<u64> = input
-        .row_costs
+        .empty_rows
         .iter()
         .map(|b| match b {
             true => 1000000,
@@ -117,7 +117,7 @@ pub fn part2(input: &Input) -> Option<u64> {
         })
         .collect();
     let col_cost_scan: Vec<u64> = input
-        .col_costs
+        .empty_cols
         .iter()
         .map(|b| match b {
             true => 1000000,
